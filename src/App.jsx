@@ -84,33 +84,6 @@ function App() {
     }
   }
 
-  async function handleCheck(id) {
-    try {
-      const updateItem = items.find((item) => item.id === id);
-      if (!updateItem) throw new Error("Item not found");
-
-      const response = await fetch(`${api_url}/items/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "Application/json",
-        },
-        body: JSON.stringify({ checked: !updateItem.checked }),
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Network response was not ok: ${errorText}`);
-      }
-
-      const newItems = items.map((item) =>
-        item.id === id ? { ...item, checked: !item.checked } : item
-      );
-      setItems(newItems);
-    } catch (error) {
-      console.error("Error updating item", error.message);
-    }
-  }
-
   function handleSubmit(e) {
     e.preventDefault();
     addItem();
@@ -136,7 +109,6 @@ function App() {
               item.item.toLowerCase().includes(search.toLowerCase())
             )}
             handleDelete={handleDelete}
-            handleCheck={handleCheck}
           />
         )}
       </main>
